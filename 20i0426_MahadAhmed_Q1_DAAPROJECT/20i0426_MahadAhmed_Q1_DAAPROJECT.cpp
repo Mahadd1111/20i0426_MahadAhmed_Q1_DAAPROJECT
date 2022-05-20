@@ -392,7 +392,7 @@ int performKflip(int k,int t,ofstream& myfile) {
                 count = 0;
             }
             auto Iend = chrono::steady_clock::now();
-            if ((chrono::duration_cast<chrono::milliseconds>(Iend - Istart).count()>5000)) {
+            if ((chrono::duration_cast<chrono::milliseconds>(Iend - Istart).count()>500)) {
                 break; //timeout i-flip after 10s and perform another flip
             }
         }
@@ -421,13 +421,16 @@ int main()
        return 0;
    }
    randomizeVariables();
+   variables[59].value = 0; variables[69].value = 1; variables[79].value = 1; variables[89].value = 0;
    myfile << "__________________________________________INITIAL ASSIGNEMENT________________________________-----------------------------------" << endl;
    int initialTrueClauses=performAssignment(myfile);
    myfile << "\n\n\n\n";
    cout << "Clauses: " << numOfClauses << endl;
    cout << "TRUE Clauses: " << initialTrueClauses << endl;
-   if (initialTrueClauses == numOfClauses) { cout << "Maximum number of clauses satisfied, no flip will satisfy more" << endl; }
-   performKflip(20, initialTrueClauses, myfile);
+   if (initialTrueClauses == numOfClauses) { cout << "Maximum number of clauses satisfied, no flip will satisfy more" << endl; return 0; }
+   int flip = 0;
+   cout << "Enter K-flip to perform: "; cin >> flip; cout << endl;
+   performKflip(flip, initialTrueClauses, myfile);
    auto Mend = chrono::steady_clock::now();
    cout << "Elapsed time in milliseconds is : " << chrono::duration_cast<chrono::milliseconds>(Mend - Mstart).count() << " ms"<<endl;
    myfile.close();
