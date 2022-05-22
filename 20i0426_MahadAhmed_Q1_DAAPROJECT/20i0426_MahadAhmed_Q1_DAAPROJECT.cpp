@@ -407,6 +407,24 @@ int performKflip(int k,int t,ofstream& myfile) {
     return 0;
 }
 
+void storeInTDash() {
+    ofstream f1;
+    f1.open("TDash.txt");
+    for (int i = 0; i < numOfVariables; i++) {
+        f1 << variables[i].value<<endl;
+    }
+    f1.close();
+}
+
+void storeInTRandom() {
+    ofstream f1;
+    f1.open("TRandom.txt");
+    for (int i = 0; i < numOfVariables; i++) {
+        f1 << variables[i].value << endl;
+    }
+    f1.close();
+}
+
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
 int main()
@@ -421,7 +439,7 @@ int main()
        return 0;
    }
    randomizeVariables();
-   variables[59].value = 0; variables[69].value = 1; variables[79].value = 1; variables[89].value = 0;
+   storeInTRandom();
    myfile << "__________________________________________INITIAL ASSIGNEMENT________________________________-----------------------------------" << endl;
    int initialTrueClauses=performAssignment(myfile);
    myfile << "\n\n\n\n";
@@ -431,6 +449,7 @@ int main()
    int flip = 0;
    cout << "Enter K-flip to perform: "; cin >> flip; cout << endl;
    performKflip(flip, initialTrueClauses, myfile);
+   storeInTDash();
    auto Mend = chrono::steady_clock::now();
    cout << "Elapsed time in milliseconds is : " << chrono::duration_cast<chrono::milliseconds>(Mend - Mstart).count() << " ms"<<endl;
    myfile.close();
